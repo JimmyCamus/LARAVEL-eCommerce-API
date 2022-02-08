@@ -16,11 +16,16 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
+        'country',
+        'state',
+        'city',
+        'address',
         'email',
         'password',
+        'rol'
     ];
 
-    protected $timestamps = false;
+    public $timestamps = false;
 
     protected $hidden = [
         'password',

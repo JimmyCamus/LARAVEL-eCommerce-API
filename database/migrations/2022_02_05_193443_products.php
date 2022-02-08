@@ -11,9 +11,14 @@ class Products extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id()->autoIncrement();
             $table->string('name');
+            $table->string('description');
+            $table->string('short_description');
+            $table->string('brand');
+            $table->string('model');
             $table->integer('price');
             $table->integer('stock');
             $table->tinyInteger('available');
+            $table->string('category');
             $table->timestamps();
         });
     }
