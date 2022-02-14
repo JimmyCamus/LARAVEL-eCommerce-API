@@ -10,9 +10,9 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    public function show(Request $request)
+    public function show()
     {
-        $cart = Cart::where('user_id', $request->id)->get();
+        $cart = Cart::where('user_id', auth()->user()->id)->get();
         $products = [];
 
         foreach($cart as $item){
@@ -32,11 +32,10 @@ class CartController extends Controller
     {
         $request->validate([
             'product_id' => ['required'],
-            'user_id' => ['required'],
             'ammount' => ['required'],
         ]);
 
-        $item = Cart::where('user_id', $request->user_id)->where('product_id', $request->product_id)->first();
+        $item = Cart::where('user_id', auth()->user()->id)->where('product_id', $request->product_id)->first();
 
         if (isset($item->id)){
             $item->ammount += $request->ammount;
@@ -48,7 +47,7 @@ class CartController extends Controller
         }
 
         $new_item = new Cart();
-        $new_item->user_id = $request->user_id;
+        $new_item->user_id = auth()->user()->id;
         $new_item->product_id = $request->product_id;
         $new_item->ammount = $request->ammount;
         $new_item->save();
@@ -61,7 +60,7 @@ class CartController extends Controller
 
     public function delete(Request $request)
     {
-        $item = Cart::where('user_id', $request->user_id)->where('product_id', $request->product_id)->first();
+        $item = Cart::where('user_id', auth()->user()->id)->where('product_id', $request->product_id)->first();
 
         if (!isset($item->id)){
             return response()->json([

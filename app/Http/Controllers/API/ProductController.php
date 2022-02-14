@@ -37,7 +37,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user->rol != 1) {
+        if (auth()->user()->rol != 1) {
             return response()->json([
                 'status' => 0,
                 'message' => 'You do not have permission to perform this action'
@@ -74,7 +74,7 @@ class ProductController extends Controller
 
     public function update(Request $request)
     {
-        if (auth()->user->rol != 1) {
+        if (auth()->user()->rol != 1) {
             return response()->json([
                 'status' => 0,
                 'message' => 'You do not have permission to perform this action'
@@ -113,7 +113,7 @@ class ProductController extends Controller
 
     public function delete(Request $request)
     {
-        if (auth()->user->rol != 1) {
+        if (auth()->user()->rol != 1) {
             return response()->json([
                 'status' => 0,
                 'message' => 'You do not have permission to perform this action'

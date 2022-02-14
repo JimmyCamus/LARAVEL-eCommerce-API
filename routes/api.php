@@ -31,17 +31,18 @@ Route::group(['middleware' => ["auth:sanctum"]], function () {
     Route::delete('products/{id}', [ProductController::class, 'delete'])->name('product.delete');
 
     Route::get('user-profile', [UserController::class, 'userProfile']);
-    Route::get('edit-user', [UserController::class, 'editUser']);
+    Route::patch('edit-user', [UserController::class, 'editUser']);
     Route::get('logout', [UserController::class, 'logout']);
 
     Route::get('sales', [SaleController::class, 'index'])->name('sales.index');
     Route::get('sales/user', [SaleController::class, 'show'])->name('sales.show');
     Route::post('sales', [SaleController::class, 'store'])->name('sales.store');
+
+    Route::get('cart', [CartController::class, 'show'])->name('cart.show');
+    Route::post('cart', [CartController::class, 'store'])->name('cart.store');
+    Route::delete('cart/{product_id}', [CartController::class, 'delete'])->name('cart.delete');
 });
 
 Route::get('products', [ProductController::class, 'index'])->name('product.index');
 Route::get('products/{id}', [ProductController::class, 'show'])->name('product.show');
 
-Route::get('cart/{id}', [CartController::class, 'show'])->name('cart.show');
-Route::post('cart', [CartController::class, 'store'])->name('cart.store');
-Route::delete('cart/{user_id}/{product_id}', [CartController::class, 'delete'])->name('cart.delete');

@@ -96,11 +96,18 @@ class UserController extends Controller
             'country' => ['required'],
             'city' => ['required'],
             'address' => ['required'],
-            'email' => ['required', 'email', 'unique:users'],
+            'email' => ['required', 'email'],
             'password' => ['required', 'confirmed']
         ]);
 
+
         $user = User::find(auth()->user()->id);
+
+        if ($user->email != $request->email) {
+            $request->validate([
+                'email' => ['unique:users'],
+            ]);
+        }
 
         if (!Hash::check($request->password, $user->password)) {
             return response()->json([
@@ -111,13 +118,14 @@ class UserController extends Controller
         }
 
         foreach ($request->except('_token') as $key => $part) {
+            if ($key == "password_confirmation" || $key == "password") continue;
             if ($request[$key] != $user[$key]) $user[$key] = $request[$key];
         }
         $user->save();
 
         return response()->json([
             'status' => 1,
-            'data' => (object)['user' => $user],
+            'data' => (object)['user' => (object)['data' => $user]],
         ]);
     }
 }

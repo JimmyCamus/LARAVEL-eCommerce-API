@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
-use App\Models\Product;
-use App\Models\Sale;
 use Carbon\Carbon;
+use App\Models\Cart;
+use App\Models\Sale;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class SaleController extends Controller
 {
@@ -27,10 +28,15 @@ class SaleController extends Controller
     public function show()
     {
         $sales = Sale::where('user_id', auth()->user()->id)->get();
+        $products = [];
+
+        foreach ($sales as $sale) {
+            $products[] = Product::find($sale->product_id);
+        }
 
         return response()->json([
             'status' => 1,
-            'data' => (object)["sales" => $sales],
+            'data' => (object)["sales" => $sales, "products" => $products],
         ]);
     }
 
@@ -49,6 +55,13 @@ class SaleController extends Controller
             $sale->sale_date = Carbon::now()->toDateTimeString();
             $sale->price = $product->price * $item[1];
             $sale->amount = $item[1];
+            $product->stock = $product->stock - $item[1];
+            $product->save();
+
+            $cartItem = Cart::where('user_id', auth()->user()->id)->where('product_id', $product->id)->first();
+            if (isset($cartItem->id)) {
+                $cartItem->delete();
+            }
 
             $sales[] = $sale;
         }
