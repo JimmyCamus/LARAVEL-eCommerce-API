@@ -19,6 +19,7 @@ class Products extends Migration
             $table->integer('stock');
             $table->tinyInteger('available');
             $table->string('category');
+            $table->string('image');
             $table->timestamps();
         });
     }

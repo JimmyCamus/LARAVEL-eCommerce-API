@@ -20,6 +20,7 @@ class Product extends Model
         'price',
         'stock',
         'available',
-        'category'
+        'category',
+        'image'
     ];
 }

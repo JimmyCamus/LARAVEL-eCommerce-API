@@ -52,6 +52,7 @@ class ProductController extends Controller
             'price' => ['required', 'numeric', 'min:0'],
             'stock' => ['required', 'numeric', 'min:0'],
             'category' => ['required'],
+            'image' => ['required'],
         ]);
 
         $product = new Product();
@@ -63,6 +64,7 @@ class ProductController extends Controller
         $product->price = $request->price;
         $product->stock = $request->stock;
         $product->category = $request->category;
+        $product->image = $request->image;
         $product->available = 1;
         $product->save();
 
@@ -89,6 +91,7 @@ class ProductController extends Controller
             'price' => ['required', 'numeric', 'min:0'],
             'stock' => ['required', 'numeric', 'min:0'],
             'category' => ['required'],
+            'image' => ['required'],
         ]);
 
         $product = Product::find($request->id);
